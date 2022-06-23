@@ -3,10 +3,17 @@ import { Button } from "@blueprintjs/core"
 import { isMobile } from "react-device-detect"
 import mainURL from "../utils/CONST"
 
+// Hate this component :-( I was in a hurry to do it faster
+// A lot of things could be optimized here and you could take out individual pieces of reused code ...
+
 export default function Products() {
+
+    // All states, maby i shoud use State management
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState([])
     const [itemCount, setItemCount] = useState(null)
+
+    // If we use mobile device its turn range to 0...5, but have some trouble with dyamic
     const [pagesRange, setPagesRange] = useState(isMobile ?
         {
             start: 0,
@@ -29,6 +36,7 @@ export default function Products() {
 
         // Get count of items
         async function getCount() {
+            //Activate Loader
             setLoading(true)
             const response = await fetch(`${mainURL}/api/v1/content/total`, {
                 method: "get",
@@ -53,6 +61,8 @@ export default function Products() {
             setData(json.result)
         }
         
+        // Refresh token query, 100% this need to rewrite (one function with different endpoints)
+        // Export/import refrech request need to ...
         getCount()
             .catch(err => {
                 fetch(`${mainURL}/api/v1/refresh`, {
@@ -79,21 +89,24 @@ export default function Products() {
             })
     }, [queryParams])
     
+    //Array just to get all pages from a ... z
     let allPages = []
-
     for (let i = 0; i <= (itemCount/10); i++) {
         allPages.push(i)
     }
 
+    // Paginate component
     function Pagination() {
-        
         return (
             <ul style={{display: 'flex', padding: 0, margin: 0}}>
+                {/* Render only pages from range start to end (0 ... 10) */}
                 {allPages.slice(pagesRange.start, pagesRange.end).map(item => (
                     <li 
                         key={item} 
                         className='list_item'
+                        // set page to get our list items
                         onClick={() => {setQueryParams({page: item, limit: queryParams.limit})}}
+                        // Highlight the current page in color
                         style={item == queryParams.page ? 
                             {
                                 listStyle: 'none', 
@@ -121,6 +134,7 @@ export default function Products() {
 
     return (
         <div>
+            {/* Loader functional */}
             <div className="lds-dual-ring" style={loading ? {display: 'block'} : {display: 'none'}}></div>
             {loading ? 
                 '' 
@@ -134,6 +148,7 @@ export default function Products() {
                         justifyContent: 'space-between',
                         padding: 0
                     }}>
+                    {/* Render list items */}
                     {data.map(item => (
                         <li 
                             key={item._id}
@@ -152,6 +167,8 @@ export default function Products() {
 
                 <p>Всего контента {itemCount}</p>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
+
+                    {/* The most terrible piece of code. It should be reused ... */}
                     <Button onClick={() => {
                         setPagesRange({start: 0, end: 10})
                         setQueryParams({page: 0, limit: 10})
@@ -192,6 +209,7 @@ export default function Products() {
                     }}
                         disabled={queryParams.page == currentPage ? 'disabled' : null}
                     >Конец</Button>
+
                 </div>
             </div>
             }

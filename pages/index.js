@@ -41,6 +41,7 @@ export default function Home() {
  
   }
 
+  // Control component
   function handleChange(e) {
     setAuthData({
       ...authData,
@@ -53,6 +54,7 @@ export default function Home() {
   }
 
   return (
+    // Don`t know why, but without StrictMode not work
     <React.StrictMode>
       <div className={styles.container}>
         <Dialog 
