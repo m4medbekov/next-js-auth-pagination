@@ -14,3 +14,54 @@ a {
 * {
   box-sizing: border-box;
 }
+
+#title-bp-dialog-3 {
+  margin-top: 0 !important;
+}
+
+.list_item:hover {
+  cursor: pointer;
+  background: rgb(179, 179, 179);
+}
+
+@media(max-width: 768px) {
+  .content__mainContainer {
+    width: 100% !important;
+  }
+
+  .list__item {
+    width: 45% !important;
+  }
+
+  .lds-dual-ring {
+    margin-top: 150px !important;
+  }
+} 
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  margin: auto;
+  margin-top: 300px
+}
+
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid rgb(42, 191, 228);
+  border-color: rgb(42, 191, 228) transparent rgb(42, 191, 228) transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
